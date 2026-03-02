@@ -9,6 +9,7 @@ import gr.aueb.cf.schoolapp.model.Teacher;
 import gr.aueb.cf.schoolapp.model.static_data.Region;
 import gr.aueb.cf.schoolapp.repository.RegionRepository;
 import gr.aueb.cf.schoolapp.repository.TeacherRepository;
+import gr.aueb.cf.schoolapp.validator.TeacherInsertValidator;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -9,8 +9,13 @@ import gr.aueb.cf.schoolapp.service.IRegionService;
 import gr.aueb.cf.schoolapp.service.ITeacherService;
 import gr.aueb.cf.schoolapp.validator.TeacherInsertValidator;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Size;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -19,7 +24,10 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Stream;
 
 @Controller
 @RequiredArgsConstructor
@@ -69,6 +77,25 @@ public class TeacherController {
             model.addAttribute("errorMessage", e.getMessage());
             return "teacher-insert";
         }
+
+    }
+
+    public String getPaginatedTeachers(@PageableDefault(page = 0, size = 5, sort = "lastname") Pageable pageable,
+                                       Model model) {
+        Page<TeacherReadOnlyDTO> teachersPage = new PageImpl<>(Stream.of(
+                new TeacherReadOnlyDTO("ab123", "Pavlos","Pavlopoulos", "1234", "Athens"),
+                new TeacherReadOnlyDTO("ab123", "Nikos","Charos", "1234", "Athens"),
+                new TeacherReadOnlyDTO("ab124", "Kostas","Lazaris", "1234", "Athens"),
+                new TeacherReadOnlyDTO("ab125", "George","Patrou", "1234", "Athens"),
+                new TeacherReadOnlyDTO("ab126", "Lydia","Spiropoulou", "1234", "Athens"))
+                .sorted(Comparator.comparing(TeacherReadOnlyDTO::lastname))
+                .skip(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .toList(), pageable, 5
+        );
+        model.addAttribute("teachers", teachersPage.getContent());
+        model.addAttribute("page", teachersPage);
+        return "teachers";
 
     }
 
