@@ -1,0 +1,59 @@
+package gr.aueb.cf.schoolapp.model;
+
+
+import jakarta.persistence.*;
+import lombok.*;
+
+import java.util.HashSet;
+import java.util.Objects;
+import java.util.Set;
+
+@Entity
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
+@Table(name = "capabilities")
+public class Capability {
+
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(unique = true, nullable = false)
+    private String name;
+
+    private String description;
+
+
+    @ManyToMany(mappedBy = "capabilities", fetch = FetchType.LAZY)
+    @Getter(AccessLevel.PROTECTED)
+    @Setter(AccessLevel.NONE)
+    private Set<Role> roles = new HashSet<>();
+
+    public Set<Role> getAllRoles() {
+        return Set.copyOf(roles);
+    }
+
+    public void addRole(Role role) {
+        roles.add(role);
+        role.getCapabilities().add(this);
+    }
+
+    public void removeRole(Role role) {
+        roles.remove(role);
+        role.getCapabilities().remove(this);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof Capability that)) return false;
+        return Objects.equals(id, that.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(id);
+    }
+}
