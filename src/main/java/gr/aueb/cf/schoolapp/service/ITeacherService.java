@@ -28,6 +28,9 @@ public interface ITeacherService {
         throws EntityNotFoundException, EntityAlreadyExistsException, EntityInvalidArgumentException;
 
     TeacherReadOnlyDTO deleteTeacherByUUID(UUID uuid) throws EntityNotFoundException;
+    public TeacherEditDTO getTeacherByUUIDDeletedFalse(UUID uuid) throws EntityNotFoundException;
+
+
 
 }
 

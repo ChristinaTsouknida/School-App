@@ -167,4 +167,12 @@ public class TeacherService implements ITeacherService {
         }
 
     }
+
+    @Override
+    @Transactional(readOnly = true)
+    public TeacherEditDTO getTeacherByUUIDDeletedFalse(UUID uuid) throws EntityNotFoundException {
+        Teacher teacher = teacherRepository.findByUuidAndDeletedFalse(uuid)
+                .orElseThrow(() -> new EntityNotFoundException("Teacher with uuid=" + uuid + " not found or deleted"));
+        return mapper.mapToTeacherEditDTO(teacher);
+    }
 }

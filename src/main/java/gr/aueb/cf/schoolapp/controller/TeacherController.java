@@ -107,7 +107,7 @@ public class TeacherController {
     @GetMapping("/edit/{uuid}")
     public String getTeacherEdit(@PathVariable UUID uuid, Model model) {
         try {
-            TeacherEditDTO teacherEditDTO = teacherService.getTeacherByUUID(uuid);
+            TeacherEditDTO teacherEditDTO = teacherService.getTeacherByUUIDDeletedFalse(uuid);
             model.addAttribute("teacherEditDTO", teacherEditDTO);
         } catch (EntityNotFoundException e) {
             model.addAttribute("errorMessage", e.getMessage());
@@ -135,10 +135,10 @@ public class TeacherController {
         }
      }
 
-     @GetMapping("/update-success")
-     public String updateSuccess() {
-        return "update-insert-success";
-     }
+    @GetMapping("/update-success")
+    public String updateSuccess() {
+        return "update-teacher-success";
+    }
 
 
 
@@ -147,6 +147,7 @@ public class TeacherController {
         return "teacher-success";
     }
 
+    @PostMapping("/delete/{uuid}")
     public String deleteTeacher(@PathVariable UUID uuid, Model model, RedirectAttributes redirectAttributes) {
         try {
             TeacherReadOnlyDTO readOnlyDTO = teacherService.deleteTeacherByUUID(uuid);
