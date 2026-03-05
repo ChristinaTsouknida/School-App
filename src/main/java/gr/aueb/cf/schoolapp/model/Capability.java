@@ -49,11 +49,11 @@ public class Capability {
     @Override
     public boolean equals(Object o) {
         if (!(o instanceof Capability that)) return false;
-        return Objects.equals(id, that.id);
+        return Objects.equals(getName(), that.getName());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(id);
+        return Objects.hashCode(getName());
     }
 }
