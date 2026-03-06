@@ -1,9 +1,11 @@
 package gr.aueb.cf.schoolapp.mapper;
 
 import gr.aueb.cf.schoolapp.dto.*;
+import gr.aueb.cf.schoolapp.model.Role;
 import gr.aueb.cf.schoolapp.model.Teacher;
 import gr.aueb.cf.schoolapp.model.User;
 import gr.aueb.cf.schoolapp.model.static_data.Region;
+import gr.aueb.cf.schoolapp.repository.RoleRepository;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -33,6 +35,10 @@ public class Mapper {
 
         public UserReadOnlyDTO mapToUserReadOnlyDTO(User user) {
             return new UserReadOnlyDTO(user.getUuid().toString(), user.getUsername(), user.getRole().getName());
+        }
+
+        public RoleReadOnlyDTO mapToRoleReadOnlyDTO(Role role) {
+            return new RoleReadOnlyDTO(role.getId(), role.getName());
         }
 
 }
